@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  learnmate_mongo:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    networks:
+      - learnmate
+
+  learnmate_app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: learnmate
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - learnmate
+    depends_on:
+      - learnmate_mongo
+
+networks:
+  learnmate:
+    name: learnmate
